@@ -25,7 +25,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    "chat_room"
+    "rest_framework",
+    "chat_room",
 ]
 
 MIDDLEWARE = [
