@@ -12,7 +12,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-^c(^xgq6ef02v%nj1g*_sp!1#^cl95vr+$jm*lqunk)3@8(5^y'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['.herokuapp.com', "127.0.0.1", "localhost"]
 
@@ -65,16 +65,15 @@ WSGI_APPLICATION = 'chat_room.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
-
 prod_db = dj_database_url.config(conn_max_age=500)
 DATABASES['default'].update(prod_db)
-
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
