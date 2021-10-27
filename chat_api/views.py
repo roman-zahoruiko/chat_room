@@ -1,3 +1,5 @@
+from drf_yasg import openapi
+from drf_yasg.utils import swagger_auto_schema
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -6,6 +8,7 @@ from .serializers import MessagesSerializer
 
 
 class MessagesListView(APIView):
+
     def get(self, request, page):
         """
         GET method for getting all messages with pagination by 10 messages per request.
@@ -20,6 +23,7 @@ class MessagesListView(APIView):
 
 
 class MessageSingleView(APIView):
+
     def get(self, request, pk):
         """GET method for getting single message by unique identifier"""
         try:
@@ -33,14 +37,27 @@ class MessageSingleView(APIView):
 
 
 class MessageAddView(APIView):
-    def post(self, request):
-        """
+
+    @swagger_auto_schema(
+        operation_description="""
         POST method for creating a new message. Body accepts email and text.
         Message validation (fields:
-        "author_username" field is optional but must be unique
+        "author_username" field is optional (according to task) but must be unique
         "author_email" are required and must be unique, email address must be valid
         "text" is required and length must be < 100)
-        """
+        """,
+        request_body=openapi.Schema(
+            type=openapi.TYPE_OBJECT,
+            required=['author_email', "text"],
+            properties={
+                'author_username': openapi.Schema(type=openapi.TYPE_STRING),
+                'author_email': openapi.Schema(type=openapi.TYPE_STRING),
+                'text': openapi.Schema(type=openapi.TYPE_STRING),
+            },
+        ),
+        tags=['add message']
+    )
+    def post(self, request):
         serializer = MessagesSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
